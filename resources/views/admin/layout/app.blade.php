@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,13 +11,15 @@
     <link rel="stylesheet" href="{{ asset('admin-asset/plugins/fontawesome-free/css/all.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('admin-asset/plugins/dropzone/min/dropzone.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin-asset/plugins/summernote/summernote.min.css') }}">
 
-    
+
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('admin-asset/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-asset/css/custom.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
+
 <body class="hold-transition sidebar-mini">
     <!-- Site wrapper -->
     <div class="wrapper">
@@ -28,7 +31,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button">
                         <i class="fas fa-bars"></i>
                     </a>
-                </li>                    
+                </li>
             </ul>
             <div class="navbar-nav pl-2"></div>
             <ul class="navbar-nav ml-auto">
@@ -46,17 +49,17 @@
                         <div class="mb-3">{{ Auth::guard('admin')->user()->email }}</div>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
-                            <i class="fas fa-user-cog mr-2"></i> Settings                                
+                            <i class="fas fa-user-cog mr-2"></i> Settings
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-lock mr-2"></i> Change Password
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="{{ route('admin.logout') }}" class="dropdown-item text-danger" 
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Logout                            
-                        </a>                            
+                        <a href="{{ route('admin.logout') }}" class="dropdown-item text-danger"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </a>
                         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
@@ -84,11 +87,12 @@
     <script src="{{ asset('admin-asset/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('admin-asset/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('admin-asset\plugins\dropzone\min\dropzone.min.js') }}"></script>
+    <script src="{{ asset('admin-asset/plugins\dropzone\min\dropzone.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('admin-asset/js/adminlte.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('admin-asset/js/demo.js') }}"></script>
+    <script src="{{ asset('admin-asset/plugins/summernote/summernote.min.js') }}"></script>
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -96,7 +100,13 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        $(document).ready(function() {
+            $(".summernote").summernote({
+                height: 250 // Correct placement inside the options object
+            });
+        });
     </script>
     @yield('customJs')
 </body>
+
 </html>

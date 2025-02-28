@@ -14,7 +14,11 @@
 		</div>
 	</div>
 </section>
-
+@if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
 <!-- Main content -->
 <section class="content">
 	<div class="container-fluid">
@@ -44,6 +48,7 @@
 						<tr>
 							<th width="60">ID</th>
 							<th>Name</th>
+							<th>Category</th>
 							<th>Slug</th>
 							<th width="100">Status</th>
 							<th width="150">Action</th>
@@ -55,6 +60,7 @@
 						<tr>
 							<td>{{ $subCategory->id }}</td>
 							<td>{{ $subCategory->name }}</td>
+							<td>{{ $subCategory->categoryName }}</td>
 							<td>{{ $subCategory->slug }}</td>
 							<td>
 								@if($subCategory->status == 1)
@@ -68,11 +74,11 @@
 								@endif
 							</td>
 							<td>
-								<a href="{{route('category.edit',$subCategory->id)}}" class="btn btn-sm btn-info">Edit</a>
-								<form action="{{ route('category.delete', $subCategory->id) }}" method="POST" style="display:inline;">
+								<a href="{{route('sub-category.edit',$subCategory->id)}}" class="btn btn-sm btn-info">Edit</a>
+								<form action="{{ route('sub-category.delete', $subCategory->id) }}" method="POST" style="display:inline;">
 									@csrf
 									@method('DELETE')
-									<button type="submit" class="btn btn-sm btn-danger" onclick="deletecategory">
+									<button type="submit" class="btn btn-sm btn-danger" onclick="deleteSubCategory">
 										Delete
 									</button>
 								</form>
@@ -98,8 +104,8 @@
 
 @section('customJs')
 <script>
-function deleteCategory(id) {
-    var url = '{{ route("category.delete", ":id") }}';
+function deleteSubCategory(id) {
+    var url = '{{ route("sub-category.delete", ":id") }}';
     var newUrl = url.replace(':id', id);
 
     if (confirm('Are you sure you want to delete this category?')) {

@@ -26,7 +26,7 @@
             <div class="col-md-12">
               <div class="mb-3">
                 <label for="category_id">Category</label>
-                <select name="category_id" id="category_id" class="form-control">
+                <select name="category_id" id="category_id" class="form-control" required>
                   <option value="">Select Category</option>
                   @if($categories->isNotEmpty())
                   @foreach($categories as $category)
@@ -34,18 +34,16 @@
                   @endforeach
                   @endif
                 </select>
-                <p></p>
+                <p class="text-danger" id="categoryError"></p>
               </div>
-
             </div>
+
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="name">Name</label>
                 <input type="text" name="name" id="name" class="form-control" placeholder="Name">
                 <p></p>
               </div>
-
-
             </div>
 
             <div class="col-md-6">
@@ -54,7 +52,6 @@
                 <input type="text" readonly name="slug" id="slug" class="form-control" placeholder="Slug">
                 <p></p>
               </div>
-
             </div>
 
             <div class="col-md-3">
@@ -67,7 +64,6 @@
                 <p></p>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -77,14 +73,13 @@
       </div>
     </form>
   </div>
-  <!-- /.card -->
+
 </section>
 @endsection
 
 @section('customJs')
 <script>
   $(document).ready(function() {
-    // Submit form via AJAX
     $("#subCategoryForm").submit(function(e) {
       e.preventDefault();
       var element = $(this);
@@ -95,14 +90,13 @@
         data: element.serialize(),
         dataType: "json",
         headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Ensure CSRF token is included
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
           if (response.status === true) {
-            alert("Subcategory created successfully!");
-            location.reload(); // Refresh page or redirect
+            window.location.href = response.redirect;
           } else {
-            var errors = response.message; // Validation errors are inside 'message'
+            var errors = response.message;
 
             // Handle validation errors
             if (errors.name) {
@@ -117,10 +111,12 @@
               $("#slug").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
             }
 
-            if (errors.category) {
-              $("#category").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors.category[0]);
+            if (errors.category_id) {
+              $("#category_id").addClass('is-invalid');
+              $("#categoryError").html(errors.category_id[0]);
             } else {
-              $("#category").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
+              $("#category_id").removeClass('is-invalid');
+              $("#categoryError").html('');
             }
           }
         },
