@@ -47,6 +47,7 @@ class CategoryController extends Controller
             'name' => $request->name,
             'slug' => $request->slug,
             'status' => $request->status ?? 0,
+            'showHome' => $request->showHome,
         ]);
 
         // Handle Image Upload
@@ -94,6 +95,7 @@ class CategoryController extends Controller
             'name' => $request->name,
             'slug' => $request->slug,
             'status' => $request->status ?? 0,
+            'showHome' => $request->showHome,
         ]);
 
         // Handle Image Update
@@ -122,7 +124,7 @@ class CategoryController extends Controller
         $this->deleteImage($category->image);
         $category->delete();
         $request->session()->flash('message', 'Category deleted successfully');
-        
+
         return redirect()->route('category.index');
     }
 

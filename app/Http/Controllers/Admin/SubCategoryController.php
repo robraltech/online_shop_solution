@@ -14,14 +14,14 @@ class SubCategoryController extends Controller
     public function index(Request $request)
     {
 
-        $subCategories = SubCategory::select('sub_categories.*', 'categories.name as categoryName')->latest('sub_categories.id')->leftjoin('categories', 'categories.id', '=', 'sub_categories.category_id');
+        $categories = SubCategory::select('sub_categories.*', 'categories.name as categoryName')->latest('sub_categories.id')->leftjoin('categories', 'categories.id', '=', 'sub_categories.category_id');
 
         if (!empty($request->get('keyword'))) {
-            $subCategories=$subCategories->where('sub_categories.name', 'like', '%' . $request->get('keyword') . '%');
+            $categories=$categories->where('sub_categories.name', 'like', '%' . $request->get('keyword') . '%');
         }
 
-        $subCategories = $subCategories->paginate(10);
-        return view('admin.sub_category.list', compact('subCategories'));
+        $categories = $categories->paginate(10);
+        return view('admin.sub_category.list', compact('categories'));
     }
     public function create()
     {
@@ -53,6 +53,7 @@ class SubCategoryController extends Controller
             'slug' => $request->slug,
             'category_id' => $request->category_id,
             'status' => $request->status,
+            'showHome' => $request->showHome,
         ]);
         // Flash success message
         session()->flash('success', 'Subcategory created successfully!');
@@ -101,6 +102,7 @@ class SubCategoryController extends Controller
         $subcategory->slug = $request->slug;
         $subcategory->category_id = $request->category_id;
         $subcategory->status = $request->status;
+        $subcategory->showHome = $request->showHome;
         $subcategory->save();
         // Flash success message
         session()->flash('success', 'Subcategory updated successfully!');

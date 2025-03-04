@@ -1,26 +1,29 @@
-@extends('admin.layout.app')
+@extends('admin.layouts.app')
 
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
 
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid my-2">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Create Product</h1>
-                </div>
-                <div class="col-sm-6 text-right">
-                    <a href="{{ route('products.index') }}" class="btn btn-primary">Back</a>
+
+		<!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid my-2">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Create Product</h1>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <a href="{{ route('products.index') }}" class="btn btn-primary">Back</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- /.container-fluid -->
-    </section>
-    <!-- Main content -->
-    <section class="content">
-        <!-- Default box -->
-        <form action="" method="post" id="productsForm" name="productsForm">
+            <!-- /.container-fluid -->
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <!-- Default box -->
+
+            <form action="" id="productForm" name="productForm" method="post">
+            @csrf
+
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-8">
@@ -30,30 +33,43 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="title">Title</label>
-                                            <input type="text" name="title" id="title" class="form-control"
-                                                placeholder="Title">
-                                            @error('title')
-                                                <p class="text-danger">{{ $message }}</p>
-                                            @enderror
+                                            <input type="text" name="title" id="title" class="form-control" placeholder="Title">
+                                            <p class="error"></p>
                                         </div>
                                     </div>
+
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="slug">Slug</label>
-                                            <input type="text" readonly name="slug" id="slug"
-                                                class="form-control" placeholder="Slug">
-                                            @error('slug')
-                                                <p class="text-danger">{{ $message }}</p>
-                                            @enderror
+                                            <input  type="text" name="slug" id="slug" class="form-control" placeholder="slug">
+                                            <p class="error"></p>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="description">Short Description</label>
+                                            <textarea name="short_description" id="short_description" cols="30" rows="10" class="summernote" placeholder=""></textarea>
+                                        </div>
+                                    </div>
+
+
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="description">Description</label>
-                                            <textarea name="description" id="description" cols="30" rows="10" class="summernote"
-                                                placeholder="Description"></textarea>
+                                            <textarea name="description" id="description" cols="30" rows="10" class="summernote" placeholder="Description"></textarea>
                                         </div>
                                     </div>
+
+
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="description">Shipping & Returns</label>
+                                            <textarea name="shipping_returns" id="shipping_returns" cols="30" rows="10" class="summernote" placeholder=""></textarea>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -69,8 +85,8 @@
                         </div>
                         <div class="row" id="product-gallery">
 
-
                         </div>
+
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Pricing</h2>
@@ -78,18 +94,16 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="price">Price</label>
-                                            <input type="text" name="price" id="price" class="form-control"
-                                                placeholder="Price">
+                                            <input type="text" name="price" id="price" class="form-control" placeholder="Price">
+                                            <p class="error"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="compare_price">Compare at Price</label>
-                                            <input type="text" name="compare_price" id="compare_price"
-                                                class="form-control" placeholder="Compare Price">
+                                            <input type="text" name="compare_price" id="compare_price" class="form-control" placeholder="Compare Price">
                                             <p class="text-muted mt-3">
-                                                To show a reduced price, move the product’s original price into Compare at
-                                                price. Enter a lower value into Price.
+                                                To show a reduced price, move the product’s original price into Compare at price. Enter a lower value into Price.
                                             </p>
                                         </div>
                                     </div>
@@ -103,46 +117,59 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="sku">SKU (Stock Keeping Unit)</label>
-                                            <input type="text" name="sku" id="sku" class="form-control"
-                                                placeholder="sku">
+                                            <input type="text" name="sku" id="sku" class="form-control" placeholder="sku">
+                                            <p class="error"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="barcode">Barcode</label>
-                                            <input type="text" name="barcode" id="barcode" class="form-control"
-                                                placeholder="Barcode">
+                                            <input type="text" name="barcode" id="barcode" class="form-control" placeholder="Barcode">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <div class="custom-control custom-checkbox">
                                                 <input type="hidden" name="track_qty" value="No">
-                                                <input class="custom-control-input" type="checkbox" id="track_qty"
-                                                    name="track_qty" value="Yes" checked>
+                                                <input class="custom-control-input" type="checkbox" value="Yes" id="track_qty" name="track_qty" checked>
                                                 <label for="track_qty" class="custom-control-label">Track Quantity</label>
-                                                @error('track_qty')
-                                                    <p class="text-danger">{{ $message }}</p>
-                                                @enderror
+                                                <p class="error"></p>
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <input type="number" min="0" name="qty" id="qty"
-                                                class="form-control" placeholder="Qty">
+                                            <input type="number" min="0" name="qty" id="qty" class="form-control" placeholder="Qty">
+                                            <p class="error"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
+
+                        {{-- Related products --}}
+                        <div class="card mb-3">
+                        <div class="card-body">
+                            <h2 class="h4 mb-3">Related product</h2>
+                            <div class="mb-3">
+                                <select multiple class="related-product w-100 " name="related_products[]" id="related_products">
+
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+
+
                     </div>
+
                     <div class="col-md-4">
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Product status</h2>
                                 <div class="mb-3">
-                                    <select name="is_featured" id="is_featured" class="form-control">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
+                                    <select name="status" id="status" class="form-control">
+                                        <option value="1">Active</option>
+                                        <option value="0">Block</option>
                                     </select>
                                 </div>
                             </div>
@@ -153,26 +180,22 @@
                                 <div class="mb-3">
                                     <label for="category">Category</label>
                                     <select name="category" id="category" class="form-control">
-                                        <option value="">Select a Category</option>
-                                        @if ($categories->isNotEmpty())
+                                      <option value="">Select a Category</option>
+                                        @if($categories->isNotEmpty())
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
-                                    @error('category')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
+                                    <p class="error"></p>
+
                                 </div>
                                 <div class="mb-3">
                                     <label for="category">Sub category</label>
                                     <select name="sub_category" id="sub_category" class="form-control">
-                                        <option value="">Select a subCategory </option>
+                                        <option value="">Select a Sub Category</option>
 
                                     </select>
-                                    @error('sub_category')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -180,17 +203,14 @@
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Product brand</h2>
                                 <div class="mb-3">
-                                    <select name="brands" id="brands" class="form-control">
-                                        <option value="">Select a Brands</option>
-                                        @if ($brands->isNotEmpty())
+                                    <select name="brand" id="brand" class="form-control">
+                                        <option value="">Select a brand</option>
+                                        @if($brands->isNotEmpty())
                                             @foreach ($brands as $brand)
                                                 <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
-                                    @error('brands')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -198,10 +218,12 @@
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Featured product</h2>
                                 <div class="mb-3">
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="0">No</option>
-                                        <option value="1">Yes</option>
+                                    <select name="is_featured" id="is_featured" class="form-control">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
                                     </select>
+                                    <p class="error"></p>
+
                                 </div>
                             </div>
                         </div>
@@ -210,168 +232,186 @@
 
                 <div class="pb-5 pt-3">
                     <button type="submit" class="btn btn-primary">Create</button>
-                    <a href="products.html" class="btn btn-outline-dark ml-3">Cancel</a>
+                    <a href="{{ route('products.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
                 </div>
-
             </div>
+            <!-- /.card -->
         </form>
-        <!-- /.card -->
-    </section>
-    <!-- /.content -->
+        </section>
+        <!-- /.content -->
 
-    <!-- /.content-wrapper -->
 @endsection
 
+
 @section('customJs')
-    <script>
-       $(document).ready(function() {
-    // Handle product form submission
-    $("#productsForm").submit(function(e) {
-        e.preventDefault();
-        var formArray = $(this).serializeArray();
 
-        $.ajax({
-            url: "{{ route('products.store') }}",
-            type: "POST",
-            data: formArray,
-            dataType: "json",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            beforeSend: function() {
-                $("#submitBtn").prop("disabled", true); // Disable submit button
-            },
-            success: function(response) {
-                if (response.status === true) {
-                    window.location.href = response.redirect;
-                } else {
-                    var errors = response.message;
 
-                    // Reset error states
-                    $(".form-control").removeClass('is-invalid');
-                    $(".text-danger").html('');
+<script>
 
-                    // Loop through errors and apply them to fields
-                    $.each(errors, function(field, messages) {
-                        $("#" + field).addClass('is-invalid');
-                        $("#" + field + "Error").html(messages[0]);
-                    });
-                }
-            },
-            error: function(xhr) {
-                console.error("AJAX Error:", xhr.responseText);
-                alert("Something went wrong. Please try again.");
-            },
-            complete: function() {
-                $("#submitBtn").prop("disabled", false); // Re-enable submit button
-            }
-        });
-    });
 
-    // Debounce function to optimize slug generation requests
-    function debounce(func, delay) {
-        let timer;
-        return function(...args) {
-            clearTimeout(timer);
-            timer = setTimeout(() => func.apply(this, args), delay);
-        };
+// Select2  js
+$('.related-product').select2({
+    ajax: {
+        url: '{{ route("products.getProducts") }}',
+        dataType: 'json',
+        tags: true,
+        multiple: true,
+        minimumInputLength: 3,
+        processResults: function (data) {
+            return {
+                results: data.tags
+            };
+        }
     }
+});
+// End here
 
-    // Auto-generate slug when title is entered (optimized with debounce)
-    $("#title").on("input", debounce(function() {
-        var element = $(this);
 
-        $.ajax({
-            url: "{{ route('getSlug') }}",
-            type: "GET",
-            data: {
-                name: element.val()
-            },
-            dataType: "json",
-            success: function(response) {
-                if (response.status === true) {
-                    $("#slug").val(response.slug.toLowerCase());
-                }
-            },
-            error: function() {
-                console.log("Error generating slug");
+// Onclick on form
+$("#productForm").submit(function (event) {
+    event.preventDefault();
+
+    var formArray = $(this).serializeArray();
+    $("button[type='submit']").prop('disabled', true);
+    $.ajax({
+        type: "post",
+        url: '{{ route("products.store") }}',
+        data: formArray,
+        dataType: "json",
+        success: function (response) {
+            $("button[type='submit']").prop('disabled', false);
+
+            if(response['status'] == true)
+            {
+                $(".error").removeClass('invalid-feedback').html('');
+                $("input[type='text'], select, input[type='number']").removeClass('is-invalid');
+                window.location.href = "{{ route('products.index') }}";
+            }else{
+                var errors = response['errors'];
+                // if(errors['title'])
+                // {
+                //     $("#title").addClass('is-invalid')
+                //     .siblings('p').addClass('invalid-feedback').html(errors['title']);
+                // }
+                // else{
+                //     $("#title").removeClass('is-invalid')
+                //     .siblings('p').removeClass('invalid-feedback').html("");
+                // }
+
+                // if we write above condiion for all fields it will get so much time and code too
+                // thats the reason we did shortage in code using below condition this short condition will worl on all fields
+
+                $(".error").removeClass('invalid-feedback').html('');
+                $("input[type='text'], select, input[type='number']").removeClass('is-invalid');
+                $.each(errors, function (key, value) {
+                    $(`#${key}`).addClass('is-invalid')
+                    .siblings('p').addClass('invalid-feedback')
+                    .html(value);
+                });
             }
-        });
-    }, 500)); // Debounced for 500ms
+        },
+        error: function()
+        {
+            console.log("something went wrong");
+        }
 
-    // Fetch subcategories based on selected category
-    $("#category").change(function() {
-        var category_id = $(this).val();
-
-        $.ajax({
-            url: "{{ route('product-subcategories.index') }}",
-            type: "GET",
-            data: {
-                category_id: category_id
-            },
-            dataType: "json",
-            success: function(response) {
-                if (response.status === true) {
-                    console.log(response);
-
-                    // Clear previous options except the first one
-                    $('#sub_category').find('option').not(':first').remove();
-
-                    // Append new subcategories
-                    $.each(response.subCategories, function(index, value) {
-                        $('#sub_category').append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                }
-            },
-            error: function() {
-                console.log("Something went wrong.");
-            }
-        });
     });
+
 });
 
-// Dropzone configuration
+// SubCategory will be select
+$("#category").change(function(){
+
+    var category_id = $(this).val();
+            $.ajax({
+                type: "get",
+                url: '{{  route("product-subcategories.index")  }}',
+                data: {category_id:category_id},
+                dataType: "json",
+                success: function (response) {
+                    $("sub_category").find("option").not(":first").remove();
+                    $.each(response["subCategories"], function(key,item){
+                        $("#sub_category").append(`<option value='${item.id}'>${item.name}</option>`);
+                    });
+                    // console.log(response);
+                },
+                error: function(){
+                    console.log("Something went wrong");
+                }
+        });
+
+        });
+
+
+// For slug
+        $("#title").change(function(){
+            element = $(this);
+                // Disabled the button
+            $("button[type=submit]").prop('disabled',true);
+
+            $.ajax({
+                type: "get",
+                url: '{{  route("getSlug")  }}',
+                data: {title:element.val()},
+                dataType: "json",
+                success: function (response) {
+                    // Disabled the button
+
+                    $("button[type=submit]").prop('disabled',false);
+
+                    if(response["status"] == true)
+                    {
+                        $("#slug").val(response["slug"]);
+                    }
+                }
+        });
+
+        });
+
+
+
+// Dropzone code
 Dropzone.autoDiscover = false;
-const dropzone = new Dropzone("#image", { // Correct Dropzone initialization
+
+const dropzone = $("#image").dropzone({
+    // init: function () {
+    //     this.on('addedfile', function(file) {
+    //         if (this.files.length > 1) {
+    //             this.removeFile(this.files[0]);
+    //         }
+    //     });
+    // },
     url: "{{ route('temp-images.create') }}",
-    maxFiles: 1,
+    maxFiles: 10,
     paramName: 'image',
     addRemoveLinks: true,
     acceptedFiles: "image/jpeg,image/png,image/gif",
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+    }, success: function (file, response) {
+       //$("#image_id").val(response.image_id);
+
+
+         var html = `<div class="col-md-3" id="image-row-${response.image_id}"><div class="card">
+            <input type="hidden" name="image_array[]" value="${response.image_id}" />
+            <img src="${response.imagePath}" class="card-img-top" alt="Card image cap">
+            <div class="card-body">
+                <a href="javascript:void(0)" onclick="deleteImage(${response.image_id})" class="btn btn-danger">Delete</a>
+            </div>
+        </div></div>`;
+
+        $("#product-gallery").append(html);
     },
-    init: function() {
-        this.on('addedfile', function(file) {
-            if (this.files.length > 1) {
-                this.removeFile(this.files[0]);
-            }
-        });
-
-        this.on("success", function(file, response) {
-            var html = `
-                <div class="col-md-3" id="image-row-${response.image_id}">
-                    <div class="card">
-                        <input type="hidden" name="images_array[]" value="${response.image_id}">
-                        <img src="${response.ImagePath}" class="card-img-top" alt="">
-                        <div class="card-body">
-                            <a href="javascript:void(0)" onclick="deleteImage(${response.image_id})" class="btn btn-danger">Delete</a>
-                        </div>
-                    </div>
-                </div>`;
-            $("#product-gallery").append(html);
-        });
-
-        this.on("complete", function(file) {
-            this.removeFile(file);
-        });
-    }
+    // delete Image from DropZone select
+    complete: function (file) {
+        this.removeFile(file);
+      }
 });
 
-// Function to delete image
-function deleteImage(id) {
-    $("#image-row-" + id).remove();
-}
+    function deleteImage(id){
+        $("#image-row-"+id).remove();
+    }
 
-    </script>
+</script>
 @endsection

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Brands;
+use App\Models\brand;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\SubCategory;
@@ -33,7 +33,7 @@ class ProductController extends Controller
     {
         $data = [];
         $categories = Category::orderBy('name', 'asc')->get();
-        $brands = Brands::orderBy('name', 'asc')->get();
+        $brands = brand::orderBy('name', 'asc')->get();
         $data['categories'] = $categories;
         $data['brands'] = $brands;
         return view('admin.products.create', $data);
@@ -72,6 +72,9 @@ class ProductController extends Controller
             $product->brand_id = $request->brands;
             $product->is_featured = $request->is_featured;
             $product->status = $request->status;
+            $product->short_description = $request->short_description;
+            $product->shipping_returns = $request->shipping_returns;
+            $product->related_products = $request->related_products;
             $product->save();
 
             if (!empty($request->images_array)) {
@@ -142,15 +145,22 @@ class ProductController extends Controller
         $product = Product::find($id);
         $subCategories = SubCategory::where('category_id', $product->category_id)->get();
         $productImage = ProductImage::where('products_id', $product->id)->get();
+
+        $relatedProduct=[];
+        if($product->related_products != ''){
+            $productArray=explode(',',$product->related_products);
+            $relatedProduct= Product::whereIn('id',$productArray)->with('product_images')->get();
+        }
         $data = [];
 
         $categories = Category::orderBy('name', 'asc')->get();
-        $brands = Brands::orderBy('name', 'asc')->get();
+        $brands = brand::orderBy('name', 'asc')->get();
         $data['categories'] = $categories;
         $data['brands'] = $brands;
         $data['product'] = $product;
         $data['subCategories'] = $subCategories;
         $data['productImage'] = $productImage;
+        $data['relatedProduct'] = $relatedProduct;
         return view('admin.products.edit', $data);
     }
 
@@ -190,6 +200,10 @@ class ProductController extends Controller
                 'brand_id' => $request->brands ?? null,
                 'is_featured' => $request->is_featured,
                 'status' => $request->status,
+                'short_description' => $request->short_description,
+                'shipping_returns' => $request->shipping_returns,
+                'related_products' => $request->related_products,
+                
             ]);
 
             
@@ -236,5 +250,23 @@ class ProductController extends Controller
                 
             ]);
         }
+    }
+
+    public function getProducts(Request $request){
+        $tempProduct=[];
+        if($request->term !=0){
+            $products=Product::where('title','like','%'.$request->term.'%')->get();
+
+            if($products == null){
+                foreach($products as $product){
+                    $tempProduct[]=array('id' => $product->id, 'text' => $product->title);
+                }
+            }
+        }
+        return response()->json([
+            'tags'=>$tempProduct,
+            'status'=>true
+
+        ]);
     }
 }

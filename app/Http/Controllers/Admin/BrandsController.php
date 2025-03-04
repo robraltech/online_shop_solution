@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Brands;
+use App\Models\brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -11,7 +11,7 @@ class BrandsController extends Controller
 {
 
     public function index(Request $request){
-        $brands=Brands::latest('id');
+        $brands=brand::latest('id');
         if($request->get('keyword')){
             $brands=$brands->where('name','like','%'.$request->get('keyword').'%');
         }
@@ -31,7 +31,7 @@ class BrandsController extends Controller
         ]);
 
         if($validator->passes()){
-            $brand=new Brands();
+            $brand=new brand();
             $brand->name=$request->name;
             $brand->slug=$request->slug;
             $brand->status=$request->status;
@@ -55,7 +55,7 @@ class BrandsController extends Controller
 
     public function edit(Request $request,$id)
     {
-        $brand=Brands::find($id);
+        $brand=brand::find($id);
         if(!$brand){
             session()->flash('error','Brand not found');
             return redirect()->route('brands.index');
@@ -72,7 +72,7 @@ class BrandsController extends Controller
         ]);
 
         if($validator->passes()){
-            $brand=Brands::find($id);
+            $brand=brand::find($id);
             $brand->name=$request->name;
             $brand->slug=$request->slug;
             $brand->status=$request->status;
@@ -94,7 +94,7 @@ class BrandsController extends Controller
     }
     public function destroy(Request $request, $id)
     {
-        $brand = Brands::find($id);
+        $brand = brand::find($id);
     
         if (!$brand) {
             return response()->json([
